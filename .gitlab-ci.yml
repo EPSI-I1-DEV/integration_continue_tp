@@ -1,0 +1,6 @@
+image: maven:3.5.4-jdk-8
+
+unit_test:
+  stage: test
+  script:
+    -mvn clean test
