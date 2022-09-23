@@ -19,6 +19,7 @@ jobs:
         # Provide the password for postgres
         env:
           POSTGRES_DB: qieam
+          POSTGRES_HOST: postgres
           POSTGRES_USER: Cyriel
           POSTGRES_PORT: 5432
           POSTGRES_HOST_AUTH_METHOD: trust
