@@ -1,0 +1,85 @@
+diff --git a/src/main/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSql.java b/src/main/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSql.java
+index cf3d94dd4f423fe165d86864f246accdba3cb46a..8b664d8ff74b04c4e0baa059c1bff2251606b428 100644
+--- a/src/main/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSql.java
++++ b/src/main/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSql.java
+@@ -17,7 +17,7 @@ import java.util.logging.Logger;
+ public class StoreDaoInPgSql implements StoreService {
+ 
+     private static final Logger LOGGER = Logger.getLogger(StoreDaoInPgSql.class.getName());
+-    private static final String GET_GAMES = "";
++    private static final String GET_GAMES = "SELECT name FROM games";
+     private static StoreDaoInPgSql instance;
+     private static String env;
+ 
+diff --git a/src/main/resources/sql/model-pg-games.sql b/src/main/resources/sql/model-pg-games.sql
+new file mode 100644
+index 0000000000000000000000000000000000000000..d198a18e0407fe9aae92ef80ddd5f94d9f82c3cd
+--- /dev/null
++++ b/src/main/resources/sql/model-pg-games.sql
+@@ -0,0 +1,18 @@
++
++DROP INDEX IF EXISTS games_name_index;
++
++DROP TABLE IF EXISTS games CASCADE;
++
++DROP SEQUENCE IF EXISTS games_id_seq;
++
++CREATE SEQUENCE games_id_seq INCREMENT BY 1 START WITH 1;
++
++CREATE TABLE games
++  (
++    id INTEGER PRIMARY KEY DEFAULT nextval('games_id_seq'),
++    name TEXT
++  );
++
++CREATE UNIQUE INDEX games_name_index ON games (lower(name));
++
++INSERT INTO GAMES (name) VALUES ('cyberpunk');
+diff --git a/src/test/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSqlTest.java b/src/test/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSqlTest.java
+index 528e8d7766612d469ddda61f9d2b7766c7256f96..32f8a847dd8e13b608f0a1750985a8e559c62301 100644
+--- a/src/test/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSqlTest.java
++++ b/src/test/java/com/quartzinsight/qieam/persistence/db/StoreDaoInPgSqlTest.java
+@@ -10,27 +10,37 @@ import com.quartzinsight.qieam.model.Games;
+ import junit.framework.Assert;
+ import org.junit.Before;
+ import org.junit.Test;
+-import org.junit.Ignore;
+ 
+ public class StoreDaoInPgSqlTest {
+ 
+-    private static final String env = "DATABASE_URL_TEST";
++    private static final String ENV = "DATABASE_URL_TEST";
+ 
+     public StoreDaoInPgSqlTest() {
+     }
+ 
+     @Before
+     public void resetDb() {
+-        MetadataPgSql.resetDb(env);
++        MetadataPgSql.resetDb(ENV);
++        if (System.getenv(ENV) == null) {
++            return;
++        }
++        MetadataPgSql.resetDb(ENV);
+     }
+ 
+-    @Ignore
+     @Test
+     public void testGetGames() {
+-        StoreDaoInPgSql instance = StoreDaoInPgSql.getInstance(env);
++        if (System.getenv(ENV) == null) {
++            return;
++        }
++        StoreDaoInPgSql instance = StoreDaoInPgSql.getInstance(ENV);
+         Games expected = new Games();
++        expected.addGame(new Game("cyberpunk"));
+         Games result = instance.getGames();
+-        Assert.assertEquals(expected, result);
++        Assert.assertNotNull(result);
++        Assert.assertNotNull(result.getGames());
++        Assert.assertEquals(expected.getGames().size(), result.getGames().size());
++        Assert.assertTrue(expected.getGames().containsAll(result.getGames()));
++        Assert.assertTrue(result.getGames().containsAll(expected.getGames()));
+     }
+ 
+ }
