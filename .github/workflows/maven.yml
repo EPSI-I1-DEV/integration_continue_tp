@@ -39,5 +39,5 @@ jobs:
         DATABASE_URL_TEST: 'postgres://Cyriel:@postgres:5432/qieam'
     - name: Analyse Sonar
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_GITHUB }}
       run: mvn verify sonar:sonar -Dmaven.test.skip=true -Dsonar.qualitygate.wait=true -Dsonar.projectKey=EPSI-I1-DEV_integration_continue_tp
