@@ -10,27 +10,37 @@ import com.quartzinsight.qieam.model.Games;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Ignore;
 
 public class StoreDaoInPgSqlTest {
 
-    private static final String env = "DATABASE_URL_TEST";
+    private static final String ENV = "DATABASE_URL_TEST";
 
     public StoreDaoInPgSqlTest() {
     }
 
     @Before
     public void resetDb() {
-        MetadataPgSql.resetDb(env);
+        MetadataPgSql.resetDb(ENV);
+        if (System.getenv(ENV) == null) {
+            return;
+        }
+        MetadataPgSql.resetDb(ENV);
     }
 
-    @Ignore
     @Test
     public void testGetGames() {
-        StoreDaoInPgSql instance = StoreDaoInPgSql.getInstance(env);
+        if (System.getenv(ENV) == null) {
+            return;
+        }
+        StoreDaoInPgSql instance = StoreDaoInPgSql.getInstance(ENV);
         Games expected = new Games();
+        expected.addGame(new Game("cyberpunk"));
         Games result = instance.getGames();
-        Assert.assertEquals(expected, result);
+        Assert.assertNotNull(result);
+        Assert.assertNotNull(result.getGames());
+        Assert.assertEquals(expected.getGames().size(), result.getGames().size());
+        Assert.assertTrue(expected.getGames().containsAll(result.getGames()));
+        Assert.assertTrue(result.getGames().containsAll(expected.getGames()));
     }
 
 }

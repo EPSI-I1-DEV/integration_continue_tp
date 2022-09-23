@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class StoreDaoInPgSql implements StoreService {
 
     private static final Logger LOGGER = Logger.getLogger(StoreDaoInPgSql.class.getName());
-    private static final String GET_GAMES = "";
+    private static final String GET_GAMES = "SELECT name FROM games";
     private static StoreDaoInPgSql instance;
     private static String env;
 
