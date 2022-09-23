@@ -24,4 +24,4 @@ sonar_analyse:
   stage: analyse
   image: maven:3.6.3-jdk-11
   script:
-    - mvn verify sonar:sonar -Dsonar.projectKey=ciproject2
+    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true -Dsonar.projectKey=ciproject2
