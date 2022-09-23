@@ -5,7 +5,6 @@ stages:
   - analyse
   - postgres
   
-
 unit_test:
   stage: test
   script:
