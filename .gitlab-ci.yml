@@ -6,3 +6,8 @@ unit_test:
     -mvn clean test
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
+
+sonar_analyze:
+  stage: analyze
+  script:
+    -mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
