@@ -8,7 +8,6 @@ stages:
 unit_test:
   stage: test
   script:
-    - export DATABASE_URL_TEST=postgres://gael:@postgres:5432/qieam
     - mvn clean test
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
@@ -27,3 +26,5 @@ postgres_service:
     POSTGRES_DB: postgres
     POSTGRES_USER: Cyriel
     POSTGRES_HOST_AUTH_METHOD: trust
+  script:
+    - export DATABASE_URL_TEST=postgres://Cyriel:@postgres:5432/qieam
