@@ -3,11 +3,11 @@ image: maven:3.5.4-jdk-8
 unit_test:
   stage: test
   script:
-    -mvn clean test
+    mvn clean test
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
 sonar_analyze:
   stage: analyze
   script:
-    -mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+    mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
