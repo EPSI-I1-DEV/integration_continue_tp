@@ -40,4 +40,4 @@ jobs:
     - name: Analyse Sonar
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn verify sonar:sonar -Dmaven.test.skip=true -Dsonar.qualitygate.wait=true -Dsonar.projectKey=integration_continue_tp
+      run: mvn verify sonar:sonar -Dmaven.test.skip=true -Dsonar.qualitygate.wait=true -Dsonar.projectKey=EPSI-I1-DEV_integration_continue_tp
