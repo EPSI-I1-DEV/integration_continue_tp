@@ -13,5 +13,10 @@ unit_test:
 
 analyze:
   stage: analyze
+  image: maven:3.6.3-jdk-11
   script:
-    - mvn verify sonar:sonar -Dsonar.qualitygate.wait=true
+    - mvn verify sonar:sonar -Dsonar.projectKey=ciproject2
+  rules:
+    - merge_requests
+    - master
+    - develop
