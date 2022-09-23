@@ -25,9 +25,3 @@ sonar_analyse:
   image: maven:3.6.3-jdk-11
   script:
     - mvn verify sonar:sonar -Dsonar.projectKey=ciproject2
-
-postgres_service:
-  stage: postgres
-  
-  script:
-    - export DATABASE_URL_TEST=postgres://Cyriel:@postgres:5432/qieam
