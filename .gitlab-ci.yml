@@ -4,3 +4,8 @@ unit_test:
   stage: test
   script:
     -mvn clean test
+
+test_job:
+  script: mvn clean test
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
