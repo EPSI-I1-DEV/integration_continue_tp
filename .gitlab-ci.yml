@@ -1,9 +1,17 @@
 image: maven:3.5.4-jdk-8
 
+services:
+    - postgres:12.2-alpine
+variables:
+  POSTGRES_DB: qieam
+  POSTGRES_USER: Cyriel
+  POSTGRES_PORT: 5432
+  POSTGRES_HOST_AUTH_METHOD: trust
+  DATABASE_URL_TEST=postgres://Cyriel:@postgres:5432/qieam
+
 stages:
   - test
   - analyse
-  - postgres
   
 unit_test:
   stage: test
@@ -20,11 +28,6 @@ sonar_analyse:
 
 postgres_service:
   stage: postgres
-  services:
-    - postgres:12.2-alpine
-  variables:
-    POSTGRES_DB: postgres
-    POSTGRES_USER: Cyriel
-    POSTGRES_HOST_AUTH_METHOD: trust
+  
   script:
     - export DATABASE_URL_TEST=postgres://Cyriel:@postgres:5432/qieam
