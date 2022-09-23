@@ -2,17 +2,24 @@ image: maven:3.5.4-jdk-8
 
 stages:
   - test
-  - analyze
+  - analyse
+  - postgres
   
 unit_test:
   stage: test
   script:
+    - export DATABASE_URL_TEST=postgres://gael:@postgres:5432/qieam
     - mvn clean test
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
-analyze:
-  stage: analyze
+sonar_analyse:
+  stage: analyse
   image: maven:3.6.3-jdk-11
   script:
     - mvn verify sonar:sonar -Dsonar.projectKey=ciproject2
+
+postgres_service:
+  stage: postgres
+  services:
+    - postgres:12.2-alpine
